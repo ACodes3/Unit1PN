@@ -1,0 +1,71 @@
+#include <iostream>
+#include <cmath>
+
+bool isPrime(unsigned int iN) {
+    if (iN < 2) {
+        return false;
+    }
+    for (unsigned int iX = 2; iX * iX <= iN; ++iX) {
+        if (iN % iX == 0)
+            return false;
+    }
+    return true;
+}
+
+bool isSemiPrime(unsigned int iN) {
+    int iCnt = 0;
+    for (unsigned int iX = 2; iX * iX <= iN; ++iX) {
+        if ((iN % iX == 0) && isPrime(iX)) {
+            ++iCnt;
+        }
+    }
+    return iCnt == 2;
+}
+
+class Prime {
+public:
+    Prime(unsigned int iN) : m_iN(iN) {}
+
+    bool isPrime() const {
+        if (m_iN < 2) {
+            return false;
+        }
+        for (unsigned int iX = 2; iX * iX <= m_iN; ++iX) {
+            if (m_iN % iX == 0)
+                return false;
+        }
+        return true;
+    }
+
+    bool isSemiPrime() const {
+        int iCnt = 0;
+        for (unsigned int iX = 2; iX * iX <= m_iN; ++iX) {
+            if ((m_iN % iX == 0) && Prime(iX).isPrime()) {
+                ++iCnt;
+            }
+        }
+        return iCnt == 2;
+    }
+
+private:
+    unsigned int m_iN;
+};
+
+int main() {
+    // Test isPrime and isSemiPrime functions
+    std::cout << "isPrime(7): " << isPrime(7) << std::endl; // Output: 1 (true)
+    std::cout << "isPrime(10): " << isPrime(10) << std::endl; // Output: 0 (false)
+    std::cout << "isSemiPrime(15): " << isSemiPrime(15) << std::endl; // Output: 1 (true)
+    std::cout << "isSemiPrime(8): " << isSemiPrime(8) << std::endl; // Output: 0 (false)
+
+    // Test Prime class
+    Prime p1(7);
+    std::cout << "p1.isPrime(): " << p1.isPrime() << std::endl; // Output: 1 (true)
+    std::cout << "p1.isSemiPrime(): " << p1.isSemiPrime() << std::endl; // Output: 0 (false)
+
+    Prime p2(15);
+    std::cout << "p2.isPrime(): " << p2.isPrime() << std::endl; // Output: 0 (false)
+    std::cout << "p2.isSemiPrime(): " << p2.isSemiPrime() << std::endl; // Output: 1 (true)
+
+    return 0;
+}
