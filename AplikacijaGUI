@@ -1,0 +1,74 @@
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+
+class Prime {
+public:
+    Prime(unsigned int iN) : m_iN(iN) {}
+
+    bool isPrime() const {
+        if (m_iN < 2) {
+            return false;
+        }
+        for (unsigned int iX = 2; iX <= std::sqrt(m_iN); ++iX) {
+            if (m_iN % iX == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool isSemiPrime() const {
+        if (m_iN < 4) {
+            return false;
+        }
+        for (unsigned int i = 2; i <= std::sqrt(m_iN); ++i) {
+            if (m_iN % i == 0) {
+                unsigned int quotient = m_iN / i;
+                if (isPrime(i) && isPrime(quotient) && (i * quotient == m_iN)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+private:
+    unsigned int m_iN;
+
+    bool isPrime(unsigned int num) const {
+        if (num < 2) {
+            return false;
+        }
+        for (unsigned int iX = 2; iX <= std::sqrt(num); ++iX) {
+            if (num % iX == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+};
+
+void printColoredRectangle(const std::string& color, const std::string& content) {
+    std::cout << "\033[48;5;" << color << "m";
+    std::cout << std::setw(5) << content;
+    std::cout << "\033[0m";
+}
+
+int main() {
+    for (unsigned int num = 1; num <= 100; ++num) {
+        Prime prime(num);
+        std::string numString = std::to_string(num);
+        if (prime.isPrime()) {
+            printColoredRectangle("4", numString); // Modra
+        } else if (prime.isSemiPrime()) {
+            printColoredRectangle("2", numString); // Zelena
+        } else {
+            printColoredRectangle("1", numString); // Rdeča
+        }
+        if (num % 10 == 0) {
+            std::cout << '\n';
+        }
+    }
+    return 0;
+}
