@@ -19,12 +19,14 @@ public:
 
     bool isSemiPrime() const {
         if (m_iN < 4) {
-            return false; // Najmanjše polprimorsko število je 4 (2 * 2)
+            return false;
         }
         for (unsigned int i = 2; i <= std::sqrt(m_iN); ++i) {
             if (m_iN % i == 0) {
                 unsigned int quotient = m_iN / i;
-                return isPrime(i) && Prime(quotient).isPrime();
+                if (isPrime(i) && isPrime(quotient) && (i * quotient == m_iN)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -48,12 +50,11 @@ private:
 
 int main() {
     unsigned int num;
-    std::cout << "Vnesite število ";
-    std::cin >> num;
+    num = 13;
 
     Prime prime(num);
     std::cout << num << " je " << (prime.isPrime() ? "" : "ni ") << "praštevilo.\n";
-    std::cout << num << " je " << (prime.isSemiPrime() ? "" : "ni ") << "polprimarno število.\n";
+    std::cout << num << " je " << (prime.isSemiPrime() ? "" : "ni ") << "polpraštevilo.\n";
 
     return 0;
 }
