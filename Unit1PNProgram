@@ -1,0 +1,59 @@
+#include <iostream>
+#include <cmath>
+
+class Prime {
+public:
+    Prime(unsigned int iN) : m_iN(iN) {}
+
+    bool isPrime() const {
+        if (m_iN < 2) {
+            return false;
+        }
+        for (unsigned int iX = 2; iX <= std::sqrt(m_iN); ++iX) {
+            if (m_iN % iX == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool isSemiPrime() const {
+        if (m_iN < 4) {
+            return false; // Najmanjše polprimorsko število je 4 (2 * 2)
+        }
+        for (unsigned int i = 2; i <= std::sqrt(m_iN); ++i) {
+            if (m_iN % i == 0) {
+                unsigned int quotient = m_iN / i;
+                return isPrime(i) && Prime(quotient).isPrime();
+            }
+        }
+        return false;
+    }
+
+private:
+    unsigned int m_iN;
+
+    bool isPrime(unsigned int num) const {
+        if (num < 2) {
+            return false;
+        }
+        for (unsigned int iX = 2; iX <= std::sqrt(num); ++iX) {
+            if (num % iX == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+};
+
+int main() {
+    unsigned int num;
+    std::cout << "Vnesite število ";
+    std::cin >> num;
+
+    Prime prime(num);
+    std::cout << num << " je " << (prime.isPrime() ? "" : "ni ") << "praštevilo.\n";
+    std::cout << num << " je " << (prime.isSemiPrime() ? "" : "ni ") << "polprimarno število.\n";
+
+    return 0;
+}
